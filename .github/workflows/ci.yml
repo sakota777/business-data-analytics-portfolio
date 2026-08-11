@@ -1,0 +1,33 @@
+name: 分析コード確認
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: シフト最適化
+        run: |
+          python projects/01_shift_optimization/generate_demo_data.py
+          python projects/01_shift_optimization/analyze.py
+      - name: ID・POS分析
+        run: |
+          python projects/02_idpos_analysis/generate_demo_data.py
+          python projects/02_idpos_analysis/analyze.py
+      - name: 営業最適化
+        run: |
+          python projects/03_sales_optimization/generate_demo_data.py
+          python projects/03_sales_optimization/analyze.py
+      - name: CRM分析
+        run: |
+          python projects/04_crm_analytics/generate_demo_data.py
+          python projects/04_crm_analytics/analyze.py
+
