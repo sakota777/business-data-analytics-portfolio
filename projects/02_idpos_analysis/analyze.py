@@ -82,12 +82,49 @@ fig, ax = plt.subplots(figsize=(9, 5))
 top = product.nlargest(12, "flyer_score").sort_values("flyer_score")
 ax.barh(top["product_name"], top["flyer_score"], color="#0f766e")
 ax.set_xlabel("販促候補スコア")
-ax.set_title("チラシ掲載候補（デモ）")
+ax.set_title("チラシ掲載候補（合成データ）")
 plt.tight_layout()
 plt.savefig(OUT / "flyer_candidates.png", dpi=160)
 plt.close()
 
+segment_order = ["優良", "一般", "休眠・育成"]
+segment_counts = customer["segment"].value_counts().reindex(segment_order).fillna(0)
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.bar(segment_counts.index, segment_counts.values, color=["#0f766e", "#38bdf8", "#f59e0b"])
+ax.set_xlabel("顧客区分")
+ax.set_ylabel("顧客数")
+ax.set_title("RFM顧客区分の構成（合成データ）")
+plt.tight_layout()
+plt.savefig(OUT / "rfm_segment_distribution.png", dpi=160)
+plt.close()
+
+category_sales = tx.groupby("category", as_index=False)["sales"].sum().sort_values("sales")
+fig, ax = plt.subplots(figsize=(9, 5))
+ax.barh(category_sales["category"], category_sales["sales"], color="#2563eb")
+ax.set_xlabel("売上金額")
+ax.set_title("カテゴリ別売上構成（合成データ）")
+plt.tight_layout()
+plt.savefig(OUT / "category_sales.png", dpi=160)
+plt.close()
+
+weekday_names = ["月", "火", "水", "木", "金", "土", "日"]
+store_weekday = tx.assign(weekday_no=tx["date"].dt.dayofweek).pivot_table(
+    index="store", columns="weekday_no", values="sales", aggfunc="sum", fill_value=0
+).reindex(columns=range(7))
+store_weekday_share = store_weekday.div(store_weekday.sum(axis=1), axis=0)
+fig, ax = plt.subplots(figsize=(9, 6))
+image = ax.imshow(store_weekday_share, aspect="auto", cmap="YlGnBu")
+ax.set_xticks(range(7), weekday_names)
+ax.set_yticks(range(len(store_weekday_share.index)), store_weekday_share.index)
+ax.set_xlabel("曜日")
+ax.set_ylabel("店舗")
+ax.set_title("店舗別の曜日売上構成比（合成データ）")
+fig.colorbar(image, ax=ax, label="店舗内売上構成比")
+plt.tight_layout()
+plt.savefig(OUT / "store_weekday_heatmap.png", dpi=160)
+plt.close()
+
 multi_store_rate = customer["stores_used"].gt(1).mean()
-summary = f"""# デモ分析結果\n\n- {len(customer):,}人の顧客をRFMで3区分へ分類しました。\n- 複数店舗を利用する顧客は {multi_store_rate:.1%} でした。\n- {len(product):,}商品をABC評価し、到達率・反復購買・併買波及・伸長余地からチラシ候補を順位付けしました。\n- 候補選定後は、対象商品の売上だけでなく併買額と再来店率を検証します。\n\n※すべて合成データによる説明用の結果です。\n"""
+summary = f"""# 分析結果（合成データ）\n\n- {len(customer):,}人の顧客をRFMで3区分へ分類しました。\n- 複数店舗を利用する顧客は {multi_store_rate:.1%} でした。\n- {len(product):,}商品をABC評価し、到達率・反復購買・併買波及・伸長余地からチラシ候補を順位付けしました。\n- 候補選定後は、対象商品の売上だけでなく併買額と再来店率を検証します。\n\n※すべて合成データによる説明用の結果です。\n"""
 (OUT / "analysis_summary.md").write_text(summary, encoding="utf-8")
 print(summary)
