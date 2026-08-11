@@ -55,12 +55,14 @@
 
 - `generate_demo_data.py`: 10店舗・約1年分の合成ID・POSを生成
 - `analyze.py`: RFM、ABC、店舗・曜日、併買、チラシ候補を分析
+- `sql/customer_rfm.sql`: 購買履歴からRFMスコアと顧客区分を作成
+- `sql/flyer_candidate_mart.sql`: POS明細と商品マスタからABC・併買・販促候補を作成
 - `data/`: 合成した取引明細・商品マスタ
 - `outputs/`: 顧客区分、商品評価、販促候補、グラフ
 
 ## 使用技術
 
-`SQL` `Python` `pandas` `ID・POS分析` `RFM分析` `ABC分析` `併買分析` `BI`
+`BigQuery SQL` `Python` `pandas` `ID・POS分析` `RFM分析` `ABC分析` `併買分析` `BI`
 
 > 企業名、商品名、実データは掲載していません。分析値は説明用の合成データによるものです。
 

@@ -26,8 +26,20 @@ for day_index, date in enumerate(dates):
         contracts = rng.binomial(applications, {"検索広告": .36, "SNS広告": .30, "自然検索": .40, "紹介": .49}[channel])
         rows.append([date.date(), channel, round(spend), impressions, clicks, registrations, consultations, applications, contracts])
 
-pd.DataFrame(rows, columns=[
+demo = pd.DataFrame(rows, columns=[
     "date", "channel", "ad_spend", "impressions", "clicks", "line_registrations",
     "consultations", "applications", "contracts",
-]).to_csv(DATA / "daily_funnel.csv", index=False, encoding="utf-8-sig")
+])
+demo.to_csv(DATA / "daily_funnel.csv", index=False, encoding="utf-8-sig")
+
+# SQL例で広告・LINE・商談の別管理データを統合できるよう、ソース別CSVも出力する。
+demo[["date", "channel", "ad_spend", "impressions", "clicks"]].to_csv(
+    DATA / "ad_daily.csv", index=False, encoding="utf-8-sig"
+)
+demo[["date", "channel", "line_registrations"]].to_csv(
+    DATA / "line_daily.csv", index=False, encoding="utf-8-sig"
+)
+demo[["date", "channel", "consultations", "applications", "contracts"]].to_csv(
+    DATA / "sales_daily.csv", index=False, encoding="utf-8-sig"
+)
 print("CRM分析のデモデータを生成しました。")

@@ -59,12 +59,13 @@ SQLとPython、GASを中心に実装しました。GASではAIエージェント
 
 - `generate_demo_data.py`: 広告・LINE・商談・契約の合成データを生成
 - `analyze.py`: ファネル、獲得単価、コホート、回帰分析
+- `sql/crm_funnel_mart.sql`: 広告・LINE・商談の複数ソースを統合したファネルを作成
 - `data/`: 合成した日次マーケティングデータ
 - `outputs/`: チャネル評価、回帰係数、グラフ
 
 ## 使用技術
 
-`BigQuery` `GAS` `Python` `Looker Studio` `GA4` `Lステップ` `Notion` `CRM分析`
+`BigQuery SQL` `GAS` `Python` `Looker Studio` `GA4` `Lステップ` `Notion` `CRM分析`
 
 > 企業名、顧客情報、実データ、画面、固有ロジックは掲載していません。
 

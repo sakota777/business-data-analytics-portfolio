@@ -56,12 +56,13 @@
 
 - `generate_demo_data.py`: 顧客属性・活動・商談結果の合成データを生成
 - `analyze.py`: セグメント、見込みスコア、優先顧客を分析
+- `sql/sales_priority_mart.sql`: 顧客・活動・商談を結合した営業優先リストを作成
 - `data/`: 合成した営業データ
 - `outputs/`: 優先顧客、スコア検証、グラフ
 
 ## 使用技術
 
-`Salesforce` `SQL` `Python` `BigQuery` `Looker Studio` `営業データ分析`
+`Salesforce` `BigQuery SQL` `Python` `Looker Studio` `営業データ分析`
 
 > 商材の詳細、企業名、顧客名、実データ、固有のスコアロジックは掲載していません。
 

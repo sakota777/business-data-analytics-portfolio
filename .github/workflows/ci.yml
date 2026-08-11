@@ -30,4 +30,6 @@ jobs:
         run: |
           python projects/04_crm_analytics/generate_demo_data.py
           python projects/04_crm_analytics/analyze.py
+      - name: BigQuery SQL構文確認
+        run: python -m unittest discover -s tests -v
 
